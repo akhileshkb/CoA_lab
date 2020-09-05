@@ -1,2 +1,2 @@
 # CoA_lab
-git repo for lab assignment
+git repo for COA lab assignments
