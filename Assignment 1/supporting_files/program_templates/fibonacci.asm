@@ -1,9 +1,9 @@
 	.data
-a:
-	47
+n:
+	10
 	.text
 main:
-	load %x0, $a, %x7 
+	load %x0, $n, %x7 
 	addi %x0, 1, %x4
 	addi %x0, 0, %x3
 	addi %x0, 65535, %x6
