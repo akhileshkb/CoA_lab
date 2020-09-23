@@ -30,21 +30,17 @@ public class Simulator{
 		try 
 		{
     		FileOutputStream fos = new FileOutputStream(new File(objectProgramFile));
-			int firstCodeAddress = ParsedProgram.firstCodeAddress;
-			// ObjectOutputStream out = new ObjectOutputStream(fos);
+			int firstCodeAddress = ParsedProgram.firstCodeAddress;\
 			fos.write(firstCodeAddress);
 			for (int i = 0; i < ParsedProgram.data.size(); i++)
 			{
 				fos.write(ParsedProgram.data.get(i));
 			}
-			// out.writeObject(ParsedProgram.data);
-			// out.writeObject(ParsedProgram.code);
-			// Serializer.serialize(ParsedProgram.code);
-			// for (int i = 0; i < ParsedProgram.code.size(); i++)
-			// {
-			// 	out.writeObject(ParsedProgram.code.get(i));
-			// } 
-			// fos.close();
+			for (int i = 0; i < ParsedProgram.code.size(); i++)
+			{
+				fos.write(ParsedProgram.code.get(i).toString().getBytes());
+			} 
+			fos.close();
 		} 
 		catch (IOException ex)
 		{
