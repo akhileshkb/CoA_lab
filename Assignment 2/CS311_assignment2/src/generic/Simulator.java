@@ -31,12 +31,12 @@ public class Simulator{
 		{
     		FileOutputStream fos = new FileOutputStream(new File(objectProgramFile));
 			int firstCodeAddress = ParsedProgram.firstCodeAddress;
-			ObjectOutputStream out = new ObjectOutputStream(fos);
-			out.write(firstCodeAddress);
-			// for (int i = 0; i < ParsedProgram.data.size(); i++)
-			// {
-			// 	out.write(ParsedProgram.data.get(i));
-			// }
+			// ObjectOutputStream out = new ObjectOutputStream(fos);
+			fos.write(firstCodeAddress);
+			for (int i = 0; i < ParsedProgram.data.size(); i++)
+			{
+				fos.write(ParsedProgram.data.get(i));
+			}
 			// out.writeObject(ParsedProgram.data);
 			// out.writeObject(ParsedProgram.code);
 			// Serializer.serialize(ParsedProgram.code);
