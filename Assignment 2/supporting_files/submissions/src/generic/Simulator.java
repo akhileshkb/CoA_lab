@@ -135,35 +135,19 @@ public class Simulator{
 						if(dop == 0)
 						{
 							int pc1 = pc + dop_o.getValue();
-							res = opcode + String.format("%5s", Integer.toBinaryString(pc1)).replaceAll(" ","0") +"0000000000000000000000";
+							res = opcode + String.format("%5s", Integer.toBinaryString(pc1)).replaceAll(" ","0") + String.format("%22s", Integer.toBinaryString(0)).replaceAll(" ","0");
 						}
 						else if(dop == 1)
 						{
 							int pc1 = pc + dop_o.getValue();
-							String op = Integer.toBinaryString(pc1);
-							if(op.length()>22)
-							{
-								op = op.substring(op.length()-22);
-							}
-							else
-								op = String.format("%22s", op).replaceAll(" ", "0");
-							res = opcode + "00000" + op;
+							res = opcode + "00000" +String.format("%22s", Integer.toBinaryString(pc1)).replaceAll(" ","0");
 						}
 						else
 						{
 							int pc1 = ParsedProgram.symtab.get(dop_o.getLabelValue()) - pc;
-							String op = Integer.toBinaryString(pc1);
-							if(op.length()>22)
-							{
-								op = op.substring(op.length()-22);
-							}
-							else
-								op = String.format("%22s", op).replaceAll(" ", "0");
-							// System.out.println(pc1);
-							res = opcode + "00000" + op;
+							res = opcode + "00000" +String.format("%22s", Integer.toBinaryString(pc1)).replaceAll(" ","0");
 						}
-						// System.out.println(res);
-						// System.out.println(res.length());
+						 
 					}
 				}
 				int res_int = binaryToDecimal(res);
