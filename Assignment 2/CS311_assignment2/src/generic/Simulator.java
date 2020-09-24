@@ -1,12 +1,12 @@
 package generic;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import generic.Operand.OperandType;
-import java.io.ObjectOutputStream;
-import java.io.File;
-import java.io.IOException;
-
+// import java.io.FileInputStream;
+// import java.io.FileOutputStream;
+// import generic.Operand.OperandType;
+// import java.io.ObjectOutputStream;
+// import java.io.File;
+// import java.io.IOException;
+import java.io.*;
 
 public class Simulator{
 		
@@ -29,18 +29,25 @@ public class Simulator{
 		//5. close the file
 		try 
 		{
-    		FileOutputStream fos = new FileOutputStream(new File(objectProgramFile));
-			int firstCodeAddress = ParsedProgram.firstCodeAddress;\
-			fos.write(firstCodeAddress);
+    		FileOutputStream fout = new FileOutputStream(new File(objectProgramFile));
+    		ByteArrayOutputStream bout = new ByteArrayOutputStream(4);
+			DataOutputStream dout = new DataOutputStream(bout);
+
+			int firstCodeAddress = ParsedProgram.firstCodeAddress;
+			dout.writeInt(firstCodeAddress);
+
 			for (int i = 0; i < ParsedProgram.data.size(); i++)
 			{
-				fos.write(ParsedProgram.data.get(i));
+				dout.writeInt(ParsedProgram.data.get(i));
 			}
-			for (int i = 0; i < ParsedProgram.code.size(); i++)
-			{
-				fos.write(ParsedProgram.code.get(i).toString().getBytes());
-			} 
-			fos.close();
+			bout.writeTo(fout);
+			// for (int i = 0; i < ParsedProgram.code.size(); i++)
+			// {
+			// 	fos.write(ParsedProgram.code.get(i).toString().getBytes("UTF-16"));
+			// }
+			 
+			fout.flush();
+			fout.close();
 		} 
 		catch (IOException ex)
 		{
