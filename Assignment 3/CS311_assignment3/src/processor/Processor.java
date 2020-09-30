@@ -13,11 +13,13 @@ import processor.pipeline.OF_EX_LatchType;
 import processor.pipeline.OperandFetch;
 import processor.pipeline.RegisterFile;
 import processor.pipeline.RegisterWrite;
+import processor.pipeline.ControlUnit;
 
 public class Processor {
 	
 	RegisterFile registerFile;
 	MainMemory mainMemory;
+	ControlUnit controlUnit;
 	
 	IF_EnableLatchType IF_EnableLatch;
 	IF_OF_LatchType IF_OF_Latch;
@@ -36,6 +38,7 @@ public class Processor {
 	{
 		registerFile = new RegisterFile();
 		mainMemory = new MainMemory();
+		controlUnit = new ControlUnit();
 		
 		IF_EnableLatch = new IF_EnableLatchType();
 		IF_OF_Latch = new IF_OF_LatchType();
@@ -72,6 +75,14 @@ public class Processor {
 
 	public void setMainMemory(MainMemory mainMemory) {
 		this.mainMemory = mainMemory;
+	}
+
+	public ControlUnit getControlUnit() {
+		return controlUnit;
+	}
+
+	public void setControlUnit(ControlUnit controlUnit) {
+		this.controlUnit = controlUnit;
 	}
 
 	public InstructionFetch getIFUnit() {
