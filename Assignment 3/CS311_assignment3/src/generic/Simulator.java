@@ -2,11 +2,27 @@ package generic;
 
 import processor.Clock;
 import processor.Processor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+import generic.Instruction.OperationType;
+import generic.Operand.OperandType;
+import processor.memorysystem.MainMemory;
+import processor.pipeline.RegisterFile;
+import java.lang.Math;
+import java.io.*;
+
 
 public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
+
+	static HashMap<String, Integer> symtab = new HashMap<String,Integer>();
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
@@ -28,6 +44,31 @@ public class Simulator {
 		 *     x1 = 65535
 		 *     x2 = 65535
 		 */
+		MainMemory mainMemory = processor.getMainMemory();
+		RegisterFile registerFile = processor.getRegisterFile();
+		FileInputStream fis = null;
+		DataInputStream dis = null;
+		try
+		{
+			fis = new FileInputStream(assemblyProgramFile);
+			dis = new DataInputStream(fis);
+			int val=0,i = 0;
+			while(dis.available() > 0){
+				mainMemory.setWord(i,dis.readInt());
+				i++;
+			}
+			int pc = mainMemory.getWord(0);
+			registerFile.setProgramCounter(pc);
+			registerFile.setValue(1,65535);
+			registerFile.setValue(2,65535);
+			System.out.println(mainMemory.getContentsAsString(1,30));
+			System.out.println(registerFile.getContentsAsString());
+			processor.setRegisterFile(registerFile);
+			processor.setMainMemory(mainMemory);
+		}
+		catch (IOException ex) {
+    		ex.printStackTrace();
+		}				
 	}
 	
 	public static void simulate()
@@ -54,4 +95,5 @@ public class Simulator {
 	{
 		simulationComplete = value;
 	}
+	
 }
