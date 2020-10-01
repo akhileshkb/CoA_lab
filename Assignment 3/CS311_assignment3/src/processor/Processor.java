@@ -41,6 +41,7 @@ public class Processor {
 		registerFile = new RegisterFile();
 		mainMemory = new MainMemory();
 		controlUnit = new ControlUnit();
+		alu = new ArithmeticLogicUnit();
 		
 		IF_EnableLatch = new IF_EnableLatchType();
 		IF_OF_Latch = new IF_OF_LatchType();
