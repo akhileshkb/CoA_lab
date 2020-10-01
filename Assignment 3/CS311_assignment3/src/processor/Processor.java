@@ -89,7 +89,7 @@ public class Processor {
 	}
 
 	public ArithmeticLogicUnit getArithmeticLogicUnit(){
-		return alu;
+		return this.alu;
 	}
 
 	public void setArithmeticLogicUnit(ArithmeticLogicUnit alu) {
