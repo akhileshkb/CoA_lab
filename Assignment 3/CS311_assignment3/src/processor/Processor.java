@@ -14,12 +14,14 @@ import processor.pipeline.OperandFetch;
 import processor.pipeline.RegisterFile;
 import processor.pipeline.RegisterWrite;
 import processor.pipeline.ControlUnit;
+import processor.pipeline.ArithmeticLogicUnit;
 
 public class Processor {
 	
 	RegisterFile registerFile;
 	MainMemory mainMemory;
 	ControlUnit controlUnit;
+	ArithmeticLogicUnit alu;
 	
 	IF_EnableLatchType IF_EnableLatch;
 	IF_OF_LatchType IF_OF_Latch;
@@ -83,6 +85,14 @@ public class Processor {
 
 	public void setControlUnit(ControlUnit controlUnit) {
 		this.controlUnit = controlUnit;
+	}
+
+	public ArithmeticLogicUnit getArithmeticLogicUnit(){
+		return alu;
+	}
+
+	public void setArithmeticLogicUnit(ArithmeticLogicUnit alu) {
+		this.alu = alu;
 	}
 
 	public InstructionFetch getIFUnit() {
