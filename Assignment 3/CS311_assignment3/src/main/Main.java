@@ -12,23 +12,23 @@ import generic.Simulator;
 public class Main {
 
 	public static void main(String[] args) {
-		if(args.length != 3)
-		{
-			Misc.printErrorAndExit("usage: java -jar <path-to-jar-file> <path-to-config-file> <path-to-stat-file> <path-to-object-file>\n");
-		}
+		// if(args.length != 1)
+		// {
+		// 	Misc.printErrorAndExit("usage: java -jar <path-to-jar-file> <path-to-config-file> <path-to-stat-file> <path-to-object-file>\n");
+		// }
 		
-		Configuration.parseConfiguratioFile(args[0]);
+		// Configuration.parseConfiguratioFile(args[0]);
 		
 		Processor processor = new Processor();
 		
-		Simulator.setupSimulation(args[2], processor);
+		Simulator.setupSimulation(args[0], processor);
 		Simulator.simulate();
 		
 		processor.printState(0, 30); // ((0, 0) refers to the range of main memory addresses we wish to print. this is an empty set.
 		
-		Statistics.printStatistics(args[1]);
+		// Statistics.printStatistics(args[1]);
 		
-		System.out.println("Hash of the Processor State = "+getHashCode(processor.getRegisterFile(), processor.getMainMemory()));
+		// System.out.println("Hash of the Processor State = "+getHashCode(processor.getRegisterFile(), processor.getMainMemory()));
 	}
 	
 	static int getHashCode(RegisterFile registerState, MainMemory memoryState) {
