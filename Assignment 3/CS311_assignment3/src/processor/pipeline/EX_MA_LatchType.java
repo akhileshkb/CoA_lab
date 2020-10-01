@@ -19,14 +19,14 @@ public class EX_MA_LatchType {
 		MA_enable = mA_enable;
 	}
 
-	public int getALUresult()
+	public int getALUResult()
 	{
 		return ALUresult;
 	}
 
 	public void setALUresult(int aluresult)
 	{
-		this.ALUresult = ALUresult;
+		this.ALUresult = aluresult;
 	}
 
 	public void setRs2(int rs_2)
