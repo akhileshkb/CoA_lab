@@ -16,8 +16,6 @@ import processor.pipeline.RegisterWrite;
 
 public class ControlUnit {
 	
-	RegisterFile registerFile;
-	MainMemory mainMemory;
 	String opcode;
 	int opCodeInt;
 	int overflow;
@@ -25,8 +23,6 @@ public class ControlUnit {
 
 	public ControlUnit()
 	{
-		registerFile = new RegisterFile();
-		mainMemory = new MainMemory();
 		opcode = new String();
 		isOverflow = false;
 		opCodeInt = 0;
