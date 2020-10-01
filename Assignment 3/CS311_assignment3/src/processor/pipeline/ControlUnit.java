@@ -20,37 +20,34 @@ public class ControlUnit {
 	MainMemory mainMemory;
 	String opcode;
 	int opCodeInt;
+	int overflow;
+	boolean isOverflow;
 
 	public ControlUnit()
 	{
 		registerFile = new RegisterFile();
 		mainMemory = new MainMemory();
 		opcode = new String();
-		opCodeInt = 0;	
-	}
-	
-	public void printState(int memoryStartingAddress, int memoryEndingAddress)
-	{
-		System.out.println(registerFile.getContentsAsString());
-		
-		System.out.println(mainMemory.getContentsAsString(memoryStartingAddress, memoryEndingAddress));		
+		isOverflow = false;
+		opCodeInt = 0;
+		overflow = 0;	
 	}
 
-	public RegisterFile getRegisterFile() {
-		return registerFile;
-	}
+	public boolean getIsOverflow() {
+        return this.isOverflow;
+    }
 
-	public void setRegisterFile(RegisterFile registerFile) {
-		this.registerFile = registerFile;
-	}
+    public void setIsOverflow(boolean isOverflow) {
+        this.isOverflow = isOverflow;
+    }
 
-	public MainMemory getMainMemory() {
-		return mainMemory;
-	}
+	public int getOverflow() {
+        return this.overflow;
+    }
 
-	public void setMainMemory(MainMemory mainMemory) {
-		this.mainMemory = mainMemory;
-	}
+    public void setOverflow(int overflow) {
+        this.overflow = overflow;
+    }
 
 	public String getOpcode() {
 		return opcode;
