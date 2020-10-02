@@ -33,16 +33,12 @@ public class MemoryAccess {
 			if(control_unit.isLoad())
 			{
 				int ldRes = containingProcessor.getMainMemory().getWord(EX_MA_Latch.getALUResult());
-				System.out.println(EX_MA_Latch.getALUResult());
-				System.out.println(ldRes);
 				MA_RW_Latch.setLoadResult(ldRes);
 			}
 			else if(control_unit.isStore())
 			{
-				int location = EX_MA_Latch.getALUResult();
-				int data = EX_MA_Latch.getRs2();
-				System.out.println(location);
-				System.out.println(data);
+				int location = containingProcessor.getRegisterFile().getValue(EX_MA_Latch.getRd()) + EX_MA_Latch.getRs2();
+				int data = EX_MA_Latch.getRs1();
 				containingProcessor.getMainMemory().setWord(location,data);
 			}
 

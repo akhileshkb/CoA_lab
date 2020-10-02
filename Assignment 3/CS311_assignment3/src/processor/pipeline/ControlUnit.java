@@ -49,16 +49,20 @@ public class ControlUnit {
 		return opcode;
 	}
 
+    public int getOpcodeInt() {
+        return opCodeInt;
+    }
+
 	public void setOpcode(String opCode) {
 		this.opcode = opCode;
-		this.opCodeInt = Integer.parseInt(this.opcode);
+		this.opCodeInt = Integer.parseInt(this.opcode,2);
 	}
 
 	public String getInstructionFormat() {
 		if(this.opcode == "11000" || this.opcode == "11101")
 			return "RI";
 
-		if(this.opcode.substring(4,5) == "0" && opCodeInt <= 20) 
+		if((opCodeInt % 2 == 0) && (opCodeInt <= 20)) 
 			return "R3";
 
 		return "R2I";

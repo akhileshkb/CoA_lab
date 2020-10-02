@@ -3,8 +3,8 @@ import processor.pipeline.ControlUnit;
 
 public class ArithmeticLogicUnit {
 
-    int A;
-    int B;
+    int a;
+    int b;
     ControlUnit controlUnit;
     int INT_MAX;
 
@@ -21,29 +21,29 @@ public class ArithmeticLogicUnit {
     }
 
     public int getA() {
-        return this.A;
+        return this.a;
     }
 
     public void setA(int a) {
-        this.A = a;
+        this.a = a;
     }
 
     public int getB() {
-        return this.B;
+        return this.b;
     }
 
     public void setB(int b) {
-        this.B = b;
+        this.b = b;
     }
 
     public int getALUResult(){
-        
+
         if(controlUnit.isLoad() || controlUnit.isStore()) {  // As [rs1+imm] is needed in Ld/St
-            return A + B;
+            return a + b;
         }
 
         if(controlUnit.isAdd()){
-            long temp = A + B;
+            long temp = a + b;
             if(temp - INT_MAX > 0) {
                 controlUnit.setIsOverflow(true);
                 
@@ -55,15 +55,15 @@ public class ArithmeticLogicUnit {
                 return Integer.parseInt(resultStr);
             }
 
-            return (A + B);
+            return a + b;
         }
 
         if(controlUnit.isSub()){
-            return (A - B);
+            return (this.a - this.b);
         }
 
         if(controlUnit.isMul()){
-            long temp = A * B;
+            long temp = a * b;
             if(temp - INT_MAX > 0) {
                 controlUnit.setIsOverflow(true);
                 
@@ -75,32 +75,32 @@ public class ArithmeticLogicUnit {
                 return Integer.parseInt(resultStr);
             }
 
-            return (A * B);
+            return a * b;
         }
 
         if(controlUnit.isDiv()){
-            return (A / B);
+            return a / b;
         }
 
         if(controlUnit.isAnd()){
-            return (A & B);
+            return a & b;
         }
 
         if(controlUnit.isOr()){
-            return (A | B);
+            return a | b;
         }
 
         if(controlUnit.isXor()){
-            return (A ^ B);
+            return a ^ b;
         }
 
         if(controlUnit.isSlt()){
-            return (A < B) ? 1 : 0;
+            return (a < b) ? 1 : 0;
         }
 
         if(controlUnit.isSll()){
-            long temp = (A << B) ;
-            if(temp - INT_MAX > 0) {
+            long temp = (a << b);
+            if(temp - INT_MAX > 0){
                 controlUnit.setIsOverflow(true);
                 
                 String binStr = Long.toString(temp);
@@ -111,29 +111,29 @@ public class ArithmeticLogicUnit {
                 return Integer.parseInt(resultStr);
             }
 
-            return (A << B) ;
+            return (a << b);
         }
 
         if(controlUnit.isSrl()){
-            return (A >> B);
+            return (a >> b);
         }
 
         if(controlUnit.isSra()){
-            return (A >>> B);
+            return (b >>> b);
         }
         return 0;
     }
 
     public int getMod(){
-        return A % B;
+        return a % b;
     }
 
     public boolean getFlag(String type){
         switch(type){
-            case "E": return (A == B);
-            case "GT": return (A > B);
-            case "LT": return (A < B);
-            case "NE": return (A != B);
+            case "E": return a == b;
+            case "GT": return a > b;
+            case "LT": return (a < b);
+            case "NE": return a != b;
         }
         return false;
     }

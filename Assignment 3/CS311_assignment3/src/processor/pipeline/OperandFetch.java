@@ -2,6 +2,7 @@ package processor.pipeline;
 
 import processor.Processor;
 import processor.pipeline.ControlUnit;
+import processor.pipeline.ArithmeticLogicUnit;
 import processor.pipeline.EX_IF_LatchType;
 import processor.pipeline.EX_MA_LatchType;
 import processor.pipeline.Execute;
@@ -16,7 +17,8 @@ public class OperandFetch {
 	IF_OF_LatchType IF_OF_Latch;
 	OF_EX_LatchType OF_EX_Latch;
 	int max = Integer.MAX_VALUE;
-	ControlUnit controlUnit = new ControlUnit();
+	ControlUnit controlUnit;
+	ArithmeticLogicUnit alu;
 
 	public OperandFetch(Processor containingProcessor, IF_OF_LatchType iF_OF_Latch, OF_EX_LatchType oF_EX_Latch)
 	{
@@ -30,6 +32,9 @@ public class OperandFetch {
 		if(IF_OF_Latch.isOF_enable())
 		{
 			//TODO
+			controlUnit = containingProcessor.getControlUnit();
+			alu = containingProcessor.getArithmeticLogicUnit();
+			alu.setControlUnit(controlUnit);
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
 			int newInstruction = IF_OF_Latch.getInstruction();
 			String instruction = String.format("%32s", Integer.toBinaryString(newInstruction)).replaceAll(" ","0");
@@ -56,7 +61,6 @@ public class OperandFetch {
 				rs1 = Integer.parseInt(instruction.substring(5,10),2);
 				rd = Integer.parseInt(instruction.substring(10,15),2);
 				rs2 = max;
-				branchTarget = currentPC + immx;
 
 				String immxStr = instruction.substring(15,32);
 
@@ -65,6 +69,7 @@ public class OperandFetch {
 					immxStr = "-" + immxStr;
 				}
 				immx = Integer.parseInt(immxStr,2);
+				branchTarget = currentPC + immx;
 			}
 
 			if(controlUnit.getInstructionFormat() == "RI"){
@@ -72,7 +77,6 @@ public class OperandFetch {
 				rd = Integer.parseInt(instruction.substring(5,10),2);
 				rs1 = max;
 				rs2 = max;
-				branchTarget = currentPC + immx;
 				
 				String immxStr = instruction.substring(15,32);
 
@@ -81,6 +85,7 @@ public class OperandFetch {
 					immxStr = "-" + immxStr;
 				}
 				immx = Integer.parseInt(immxStr,2);
+				branchTarget = currentPC + immx;
 			}						
 
 			OF_EX_Latch.setRd(rd);
@@ -91,11 +96,10 @@ public class OperandFetch {
 			OF_EX_Latch.setInstructionFormat(controlUnit.getInstructionFormat());
 
 			containingProcessor.setControlUnit(controlUnit);
+			containingProcessor.setArithmeticLogicUnit(alu);
 
 			IF_OF_Latch.setOF_enable(false);
-			OF_EX_Latch.setEX_enable(true);
-		
-			OF_EX_Latch.printState();
+			OF_EX_Latch.setEX_enable(true);		
 		}
 	}
 

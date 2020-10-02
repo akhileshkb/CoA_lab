@@ -36,6 +36,11 @@ public class Processor {
 	MemoryAccess MAUnit;
 	RegisterWrite RWUnit;
 	
+	boolean isEnd;
+	// Stats
+	int numIns;
+	int numCycles;
+
 	public Processor()
 	{
 		registerFile = new RegisterFile();
@@ -52,7 +57,7 @@ public class Processor {
 		
 		IFUnit = new InstructionFetch(this, IF_EnableLatch, IF_OF_Latch, EX_IF_Latch);
 		OFUnit = new OperandFetch(this, IF_OF_Latch, OF_EX_Latch);
-		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch);
+		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch,IF_EnableLatch);
 		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch);
 		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch);
 	}
@@ -115,5 +120,31 @@ public class Processor {
 	public RegisterWrite getRWUnit() {
 		return RWUnit;
 	}
+
+
+	public boolean getIsEnd() {
+		return this.isEnd;
+	}
+
+	public void setIsEnd(boolean isEnd) {
+		this.isEnd = isEnd;
+	}
+
+	public int getNumIns() {
+		return this.numIns;
+	}
+
+	public void setNumIns(int numIns) {
+		this.numIns = numIns;
+	}
+
+	public int getNumCycles() {
+		return this.numCycles;
+	}
+
+	public void setNumCycles(int numCycles) {
+		this.numCycles = numCycles;
+	}
+
 
 }

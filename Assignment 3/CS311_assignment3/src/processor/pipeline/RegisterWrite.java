@@ -27,7 +27,6 @@ public class RegisterWrite {
 			int result = alu.getALUResult();
 			if(control_unit.isLoad())
 				result = MA_RW_Latch.getLoadResult();
-			System.out.println(result);
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
 			int inst = containingProcessor.getMainMemory().getWord(currentPC-1);
 			String instStr = Integer.toBinaryString(inst);
@@ -42,12 +41,10 @@ public class RegisterWrite {
             	rdStr = instStr.substring(15,20);
 
             int rd = Integer.parseInt(rdStr,2);
-            System.out.println("rd:" + Integer.toString(rd));
 
             if (control_unit.isWb())
             	containingProcessor.getRegisterFile().setValue(rd,result);
             if(control_unit.isEnd()){
-            	// containingProcessor.setIsEnd(true);
             	Simulator.setSimulationComplete(true);
             }
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);

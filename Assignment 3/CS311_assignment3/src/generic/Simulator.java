@@ -52,17 +52,14 @@ public class Simulator {
 		{
 			fis = new FileInputStream(assemblyProgramFile);
 			dis = new DataInputStream(fis);
-			int val=0,i = 0;
+			int val=dis.readInt(),i = 0;
 			while(dis.available() > 0){
 				mainMemory.setWord(i,dis.readInt());
 				i++;
 			}
-			int pc = mainMemory.getWord(0);
-			registerFile.setProgramCounter(pc);
+			registerFile.setProgramCounter(val);
 			registerFile.setValue(1,65535);
 			registerFile.setValue(2,65535);
-			System.out.println(mainMemory.getContentsAsString(1,30));
-			System.out.println(registerFile.getContentsAsString());
 			processor.setRegisterFile(registerFile);
 			processor.setMainMemory(mainMemory);
 		}
