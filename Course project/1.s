@@ -9,9 +9,9 @@ D_ADD EQU 0x1000001A
 __main2
 	MOV R1, #0Xff
 	CMP R1, #0Xff
-	BLEQ ubcd
+	BEQ ubcd
 	CMP R1, #0X00
-	BLEQ dbcd
+	BEQ dbcd
 	B STOP
 ubcd
 	LDR R2, =U_ADD
@@ -35,7 +35,7 @@ ubcd
 	STR R11, [R2,#8]
 	MOV R12, #0X09
 	STR R12, [R2,#9]
-	BX LR 
+	B STOP
 dbcd
 	LDR R2, =D_ADD
 	MOV R3, #0X09 
@@ -58,6 +58,6 @@ dbcd
 	STR R11, [R2,#8]
 	MOV R12, #0X00
 	STR R12, [R2,#9]
-	BX LR
-STOP B STOP
+	B STOP
+STOP
 	END
