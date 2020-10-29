@@ -3,7 +3,7 @@ package processor.pipeline;
 public class OF_EX_LatchType {
 	
 	boolean EX_enable;
-
+	ControlUnit cu;
 	int rs1;       //if any of these integers are 2147483647 then that integer is not used in the format.
 	int rs2;
 	int rd;
@@ -77,6 +77,14 @@ public class OF_EX_LatchType {
 
 	public void setEX_enable(boolean eX_enable) {
 		EX_enable = eX_enable;
+	}
+
+	public void setControlUnit(ControlUnit cu) {
+		this.cu = cu;
+	}
+
+	public ControlUnit getControlUnit() {
+		return cu;
 	}
 
 	public void printState(){  

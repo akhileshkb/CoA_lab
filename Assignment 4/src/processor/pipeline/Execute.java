@@ -8,7 +8,12 @@ public class Execute {
 	EX_MA_LatchType EX_MA_Latch;
 	EX_IF_LatchType EX_IF_Latch;
 	IF_EnableLatchType IF_EnableLatch;
+	ControlUnit cu = new ControlUnit();
+	ControlUnit controlunit = new ControlUnit();
+	boolean is_end = false;
+	//ArithmeticLogicUnit alu;
 	
+
 	public Execute(Processor containingProcessor, OF_EX_LatchType oF_EX_Latch, EX_MA_LatchType eX_MA_Latch, EX_IF_LatchType eX_IF_Latch, IF_EnableLatchType iF_EnableLatch)
 	{
 		this.containingProcessor = containingProcessor;
@@ -18,17 +23,33 @@ public class Execute {
 		this.IF_EnableLatch = iF_EnableLatch;
 	}
 	
+	public ControlUnit getControlUnit(){
+		return this.cu;
+	}
+
 	public void performEX()
 	{
+		System.out.println("Entered EX");
 		//TODO
-		if(OF_EX_Latch.isEX_enable())
+		if(OF_EX_Latch.isEX_enable() && !is_end)
 		{
-			ControlUnit cu = containingProcessor.getControlUnit();
-			ArithmeticLogicUnit alu = containingProcessor.getArithmeticLogicUnit();
-			alu.setControlUnit(cu); 
+			System.out.println("Performing EX");
 
 			int rs1;
 			int rs2;
+
+			this.cu = OF_EX_Latch.getControlUnit();
+			this.controlunit = this.cu;
+
+			if (controlunit.isEnd()){
+				is_end = true;
+			}
+
+			ArithmeticLogicUnit alu = new ArithmeticLogicUnit();
+
+			alu.setControlUnit(cu);
+
+			System.out.println(OF_EX_Latch.getRs1());
 
 			rs1 = containingProcessor.getRegisterFile().getValue(OF_EX_Latch.getRs1());
 			if(cu.getInstructionFormat() != "R3")
@@ -49,6 +70,8 @@ public class Execute {
 			alu.setB(rs2);
 
 			int aluout = alu.getALUResult();
+
+			System.out.println(Integer.toString(aluout) + "  " + rs1 + "  " + rs2 +"  "+cu.isLoad());
 
 			if(cu.isDiv())
 			{
@@ -82,17 +105,27 @@ public class Execute {
 			EX_MA_Latch.setRs2(rs2);
 			EX_MA_Latch.setRs1(rs1);
 			EX_MA_Latch.setRd(OF_EX_Latch.getRd());
+			EX_MA_Latch.setControlUnit(cu);
 
 			OF_EX_Latch.setEX_enable(false);
 			if(isBranchTaken)
 			{
 				EX_MA_Latch.setMA_enable(false);
 				IF_EnableLatch.setIF_enable(true);
+				containingProcessor.getOFUnit().IF_OF_Latch.OF_enable=false;
+				containingProcessor.getIFUnit().IF_EnableLatch.IF_enable = false;
 			}
 			else
 			{
 				EX_MA_Latch.setMA_enable(true);	
 			}
+		}
+		else {
+			controlunit.opcode="";
+			controlunit.rs1="";
+			controlunit.rs2="";
+			controlunit.rd="";
+			controlunit.Imm = "";
 		}
 	}
 

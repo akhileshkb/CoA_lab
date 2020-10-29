@@ -5,8 +5,10 @@ import processor.Processor;
 
 public class RegisterWrite {
 	Processor containingProcessor;
+	ControlUnit controlunit = new ControlUnit();
 	MA_RW_LatchType MA_RW_Latch;
 	IF_EnableLatchType IF_EnableLatch;
+	boolean is_end = false;
 	
 	public RegisterWrite(Processor containingProcessor, MA_RW_LatchType mA_RW_Latch, IF_EnableLatchType iF_EnableLatch)
 	{
@@ -17,40 +19,44 @@ public class RegisterWrite {
 	
 	public void performRW()
 	{
+		System.out.println("Entered RW");
 		if(MA_RW_Latch.isRW_enable())
 		{
+			System.out.println("performing RW");
 			//TODO
-			ControlUnit control_unit = containingProcessor.getControlUnit();
-			ArithmeticLogicUnit alu = containingProcessor.getArithmeticLogicUnit();
-			alu.setControlUnit(control_unit);
+			controlunit = MA_RW_Latch.getControlUnit(); 
+			int result = MA_RW_Latch.getALUResult();
+			int rd = MA_RW_Latch.getRd();
 
-			int result = alu.getALUResult();
-			if(control_unit.isLoad())
+			if(controlunit.isLoad())
 				result = MA_RW_Latch.getLoadResult();
-			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
-			int inst = containingProcessor.getMainMemory().getWord(currentPC-1);
-			String instStr = Integer.toBinaryString(inst);
-			if( inst > 0 ){
-                instStr = String.format("%32s", Integer.toBinaryString(inst)).replace(' ', '0');
-            }
-            String rdStr = instStr.substring(10,15);
+			
+			System.out.println(Integer.toString(result)+"  "+rd);
 
-            if(control_unit.isJmp())
-            	rdStr = instStr.substring(5,10);
-            if(control_unit.getInstructionFormat() == "R3")
-            	rdStr = instStr.substring(15,20);
-
-            int rd = Integer.parseInt(rdStr,2);
-
-            if (control_unit.isWb())
+            if (controlunit.isWb())
             	containingProcessor.getRegisterFile().setValue(rd,result);
-            if(control_unit.isEnd()){
-            	Simulator.setSimulationComplete(true);
-            }
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
 			
 			MA_RW_Latch.setRW_enable(false);
 			IF_EnableLatch.setIF_enable(true);
+
+			System.out.println(controlunit.opCodeInt);
+
+			if(controlunit.opCodeInt == 29){
+            	Simulator.setSimulationComplete(true);
+				MA_RW_Latch.setRW_enable(false);
+				IF_EnableLatch.setIF_enable(false);
+				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() - 3);
+
+            }
+		}
+		else{
+			IF_EnableLatch.setIF_enable(true);	
+			controlunit.opcode="";
+			controlunit.rs1="";
+			controlunit.rs2="";
+			controlunit.rd="";
+			controlunit.Imm = "";
 		}
 	}
 

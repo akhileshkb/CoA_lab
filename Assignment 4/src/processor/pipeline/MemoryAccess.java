@@ -14,8 +14,10 @@ import processor.pipeline.OF_EX_LatchType;
 
 public class MemoryAccess {
 	Processor containingProcessor;
+	ControlUnit controlunit = new ControlUnit();
 	EX_MA_LatchType EX_MA_Latch;
 	MA_RW_LatchType MA_RW_Latch;
+	boolean is_end = false;
 	
 	public MemoryAccess(Processor containingProcessor, EX_MA_LatchType eX_MA_Latch, MA_RW_LatchType mA_RW_Latch)
 	{
@@ -26,16 +28,27 @@ public class MemoryAccess {
 	
 	public void performMA()
 	{
+		System.out.println("Entered MA");
 		//TODO
-		if(EX_MA_Latch.isMA_enable())
+		if(EX_MA_Latch.isMA_enable() && !is_end)
 		{
-			ControlUnit control_unit = containingProcessor.getControlUnit();
-			if(control_unit.isLoad())
+			System.out.println("Performing MA");
+			
+			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
+			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
+			this.controlunit = EX_MA_Latch.getControlUnit();
+
+			if (controlunit.isEnd()){
+				is_end = true;
+			}
+
+			if(controlunit.isLoad())
 			{
 				int ldRes = containingProcessor.getMainMemory().getWord(EX_MA_Latch.getALUResult());
+				System.out.println(ldRes);
 				MA_RW_Latch.setLoadResult(ldRes);
 			}
-			else if(control_unit.isStore())
+			else if(controlunit.isStore())
 			{
 				int location = containingProcessor.getRegisterFile().getValue(EX_MA_Latch.getRd()) + EX_MA_Latch.getRs2();
 				int data = EX_MA_Latch.getRs1();
@@ -50,7 +63,15 @@ public class MemoryAccess {
 			{
 				MA_RW_Latch.setRW_enable(false);
 			}
+			MA_RW_Latch.setControlUnit(controlunit);
 			EX_MA_Latch.setMA_enable(false);
+		}
+		else{
+			controlunit.opcode="";
+			controlunit.rs1="";
+			controlunit.rs2="";
+			controlunit.rd="";
+			controlunit.Imm = "";
 		}
 	}
 

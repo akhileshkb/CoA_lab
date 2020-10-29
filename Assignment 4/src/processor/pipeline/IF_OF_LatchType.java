@@ -1,7 +1,7 @@
 package processor.pipeline;
 
 public class IF_OF_LatchType {
-	
+	ControlUnit cu;
 	boolean OF_enable;
 	int instruction;
 	
@@ -22,8 +22,15 @@ public class IF_OF_LatchType {
 		return instruction;
 	}
 
-	public void setInstruction(int instruction) {
+	public void setInstruction(int instruction , String opcode) {
 		this.instruction = instruction;
+		ControlUnit cu1 = new ControlUnit();
+
+		cu1.setOpcode(opcode);
+		this.cu = cu1;
 	}
 
+	public ControlUnit getControlUnit() {
+		return cu;
+	}
 }

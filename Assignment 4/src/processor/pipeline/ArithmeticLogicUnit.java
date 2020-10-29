@@ -17,6 +17,7 @@ public class ArithmeticLogicUnit {
     }
 
     public void setControlUnit(ControlUnit controlUnit) {
+        System.out.println("HI00");
         this.controlUnit = controlUnit;
     }
 

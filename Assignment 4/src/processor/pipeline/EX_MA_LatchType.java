@@ -3,6 +3,7 @@ package processor.pipeline;
 public class EX_MA_LatchType {
 	
 	boolean MA_enable;
+	ControlUnit cu;
 	int ALUresult;
 	int rs2;
 	int rs1;
@@ -59,6 +60,14 @@ public class EX_MA_LatchType {
 	public int getRd()
 	{
 		return rd;
+	}
+
+	public void setControlUnit(ControlUnit cu) {
+		this.cu = cu;
+	}
+
+	public ControlUnit getControlUnit() {
+		return cu;
 	}
 
 	public void printState()
