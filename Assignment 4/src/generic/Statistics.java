@@ -7,6 +7,8 @@ public class Statistics {
 	// TODO add your statistics here
 	static int numberOfInstructions;
 	static int numberOfCycles;
+	public static int datahaz=0;
+	public static int controlhaz=0;
 	
 
 	public static void printStatistics(String statFile)
@@ -15,9 +17,10 @@ public class Statistics {
 		{
 			PrintWriter writer = new PrintWriter(statFile);
 			
-			writer.println("Number of instructions executed = " + numberOfInstructions);
+			// writer.println("Number of instructions executed = " + numberOfInstructions);
 			writer.println("Number of cycles taken = " + numberOfCycles);
-			
+			writer.println("Number of data hazards = " + datahaz);
+			writer.println("Number of control hazards = " + controlhaz);
 			//  TODO add code here to print statistics in the output file
 
 			// System.out.println("Number of instructions executed = " + numberOfInstructions);

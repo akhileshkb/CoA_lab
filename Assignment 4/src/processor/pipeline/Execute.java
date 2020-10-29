@@ -1,6 +1,7 @@
 package processor.pipeline;
 
 import processor.Processor;
+import generic.Statistics;
 
 public class Execute {
 	Processor containingProcessor;
@@ -110,6 +111,12 @@ public class Execute {
 			OF_EX_Latch.setEX_enable(false);
 			if(isBranchTaken)
 			{
+				if(containingProcessor.getIFUnit().is_end == true) {
+					Statistics.controlhaz +=1 ;
+				}
+				else {
+					Statistics.controlhaz +=2 ;
+				}
 				EX_MA_Latch.setMA_enable(false);
 				IF_EnableLatch.setIF_enable(true);
 				containingProcessor.getOFUnit().IF_OF_Latch.OF_enable=false;
