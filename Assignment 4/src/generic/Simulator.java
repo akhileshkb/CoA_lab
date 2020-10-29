@@ -70,6 +70,7 @@ public class Simulator {
 	
 	public static void simulate()
 	{
+		int cycles = 0;
 		while(simulationComplete == false)
 		{
 			processor.getRWUnit().performRW();
@@ -78,14 +79,16 @@ public class Simulator {
 			processor.getOFUnit().performOF();
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();
+			cycles++;
 			System.out.println(Clock.getCurrentTime()+"..............................");
 		}
 		
 		// TODO
 		// set statistics
 		Statistics stats = new Statistics();
-		stats.setNumberOfInstructions(processor.getNumIns());
-		stats.setNumberOfCycles(processor.getNumCycles());
+		// stats.setNumberOfInstructions(processor.getNumIns());
+		// stats.setNumberOfCycles(processor.getNumCycles());
+		stats.setNumberOfCycles(cycles);
 		// System.out.println(processor.getNumIns());
 		// System.out.println(processor.getNumCycles());
 	}

@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Statistics;
 import processor.Processor;
 import processor.pipeline.ControlUnit;
 import processor.pipeline.ArithmeticLogicUnit;
@@ -441,6 +442,7 @@ public class OperandFetch {
 			}		
 			else{
 				containingProcessor.getIFUnit().hazard = true ;
+				Statistics.datahaz++;
 			}
 		}
 	}
