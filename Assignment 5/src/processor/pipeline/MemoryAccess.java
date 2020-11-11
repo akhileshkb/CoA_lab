@@ -10,7 +10,7 @@ import generic.Simulator;
 import processor.Clock;
 import processor.Processor;
 
-public class MemoryAccess{
+public class MemoryAccess implements Element{
 	Processor containingProcessor;
 	ControlUnit controlunit = new ControlUnit();
 	public EX_MA_LatchType EX_MA_Latch;
@@ -30,6 +30,10 @@ public class MemoryAccess{
 		//TODO
 		if(EX_MA_Latch.isMA_enable() && !is_end)
 		{
+			if(EX_MA_Latch.isMA_busy())
+			{
+				return;
+			}
 			System.out.println("Performing MA");
 			
 			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
@@ -42,15 +46,27 @@ public class MemoryAccess{
 
 			if(controlunit.isLoad())
 			{
-				int ldRes = containingProcessor.getMainMemory().getWord(EX_MA_Latch.getALUResult());
+				// int ldRes = containingProcessor.getMainMemory().getWord(EX_MA_Latch.getALUResult());
 				// System.out.println("Load Result : " + ldRes);
-				MA_RW_Latch.setLoadResult(ldRes);
+				// MA_RW_Latch.setLoadResult(ldRes);
+				Simulator.getEventQueue().addEvent(
+						new MemoryReadEvent(
+								Clock.getCurrentTime()+Configuration.mainMemoryLatency,
+								this,containingProcessor.getMainMemory(),
+								EX_MA_Latch.getALUResult()));
+				EX_MA_Latch.setMA_busy(true);
 			}
 			else if(controlunit.isStore())
 			{
-				int location = containingProcessor.getRegisterFile().getValue(EX_MA_Latch.getRd()) + EX_MA_Latch.getRs2();
-				int data = EX_MA_Latch.getRs1();
-				containingProcessor.getMainMemory().setWord(location,data);
+				// int location = EX_MA_Latch.getALUResult()//containingProcessor.getRegisterFile().getValue(EX_MA_Latch.getRd()) + EX_MA_Latch.getRs2();
+				// int data = EX_MA_Latch.getRs1();
+				// containingProcessor.getMainMemory().setWord(location,data);
+				Simulator.getEventQueue().addEvent(
+						new MemoryWriteEvent(
+								Clock.getCurrentTime()+Configuration.mainMemoryLatency,
+								this,containingProcessor.getMainMemory(),
+								EX_MA_Latch.getALUResult(),EX_MA_Latch.getRs2()));
+				EX_MA_Latch.setMA_busy(true);
 			}
 
 			if(EX_MA_Latch.isMA_enable())
@@ -72,5 +88,16 @@ public class MemoryAccess{
 			controlunit.Imm = "";
 		}
 	}
+}
+@Override
 
+public void handleEvent(Event e) {
+	// TODO Auto-generated method stub
+	MemoryResponseEvent event=(MemoryResponseEvent) e;
+	MA_RW_Latch.setLoadResult(event.getValue());
+	EX_MA_Latch.setMA_busy(false);
+	MA_RW_Latch.setRW_enable(true);
+	EX_MA_Latch.setMA_enable(false);
+	
+	
 }
