@@ -4,6 +4,7 @@ public class IF_OF_LatchType {
 	ControlUnit cu;
 	boolean OF_enable;
 	int instruction;
+	boolean OF_busy;
 	
 	public IF_OF_LatchType()
 	{

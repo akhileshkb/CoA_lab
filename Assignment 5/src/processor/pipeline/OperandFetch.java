@@ -15,8 +15,8 @@ import processor.pipeline.MemoryAccess;
 import processor.pipeline.OF_EX_LatchType;
 public class OperandFetch {
 	Processor containingProcessor;
-	IF_OF_LatchType IF_OF_Latch;
-	OF_EX_LatchType OF_EX_Latch;
+	public IF_OF_LatchType IF_OF_Latch;
+	public OF_EX_LatchType OF_EX_Latch;
 	int max = Integer.MAX_VALUE;
 	ControlUnit controlUnit = new ControlUnit();
 	ArithmeticLogicUnit alu;
@@ -94,11 +94,22 @@ public class OperandFetch {
 		if(IF_OF_Latch.isOF_enable() && !is_end)
 		{
 			//TODO
+			if(OF_EX_Latch.isEX_busy()) {
+				IF_OF_Latch.OF_busy=true;
+				return;
+			}
+			else 
+			{
+				IF_OF_Latch.OF_busy=false;
+			}
+
 			controlUnit = IF_OF_Latch.getControlUnit();
 
-			if (controlUnit.isEnd()){
+			if (controlUnit.isEnd())
+			{
 				is_end = true;
 			}
+
 
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
 			int newInstruction = IF_OF_Latch.getInstruction();
@@ -160,56 +171,70 @@ public class OperandFetch {
 
 			// Determine hazard
 			boolean hazard = false;
-
+			boolean conflict1 = false;
+			boolean conflict2=false;
+			boolean conflict3=false;
 			switch(String.valueOf(r3(opcode)))
 			{
 				case "true":
 					if(containingProcessor.getEXUnit().controlunit.opcode.equals("00111") || containingProcessor.getEXUnit().controlunit.opcode.equals("00110")) {
 						if(rs1_str == "11111"){
 							hazard = true;
+							conflict1 = true;
 						}
 						if(rs2_str == "11111"){
 							hazard = true;
+							conflict1 = true;
 						}
 					}
 					if(r3(containingProcessor.getEXUnit().controlunit.opcode) || r2i1(containingProcessor.getEXUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1 = true;
 						}
 						if(rs2_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 								hazard = true;
+								conflict1 = true;
 						}
 					}
 					if(r3(containingProcessor.getMAUnit().controlunit.opcode) || r2i1(containingProcessor.getMAUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 						if(rs2_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 					}
 					if(r3(containingProcessor.getRWUnit().controlunit.opcode) || r2i1(containingProcessor.getRWUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 							hazard = true;
+							conflict3 = true;
 						}
 						if(rs2_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 							hazard = true;
+							conflict3 = true;
 						}
 					}
 					if(containingProcessor.getEXUnit().controlunit.opcode.equals("10110")) {
 						if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1= true;
 						}
 						if(rs2_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1= true;
 						}
 					}
 					if(containingProcessor.getMAUnit().controlunit.opcode.equals("10110")) {
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 						if(rs2_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 					}
 			}
@@ -220,32 +245,38 @@ public class OperandFetch {
 					if(containingProcessor.getEXUnit().controlunit.opcode.equals("00111") || containingProcessor.getEXUnit().controlunit.opcode.equals("00110")) {
 						if(rs1_str.equals("11111")){
 							hazard = true;
+							conflict1 = true;
 						}
 					}
 					if(r3(containingProcessor.getEXUnit().controlunit.opcode) || r2i1(containingProcessor.getEXUnit().controlunit.opcode)) {
 							
 						if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1 = true;
 						}
 					}
 					if(r3(containingProcessor.getMAUnit().controlunit.opcode) || r2i1(containingProcessor.getMAUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 					}
 					if(r3(containingProcessor.getRWUnit().controlunit.opcode) || r2i1(containingProcessor.getRWUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 							hazard = true;
+							conflict3 = true;
 						}
 					}
 					if(containingProcessor.getEXUnit().controlunit.opcode.equals("10110")) {
 						if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1 = true;
 						}
 					}
 					if(containingProcessor.getMAUnit().controlunit.opcode.equals("10110")) {
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 					}
 			}
@@ -256,49 +287,61 @@ public class OperandFetch {
 					if(containingProcessor.getEXUnit().controlunit.opcode.equals("00111") || containingProcessor.getEXUnit().controlunit.opcode.equals("00110")) {
 						if(rs1_str.equals("11111")){
 							hazard = true;
+							conflict1 = true;
 						}
 						if(rd_str.equals("11111")){
 							hazard = true;
+							conflict1 = true;
 						}
 					}
 					if(r3(containingProcessor.getEXUnit().controlunit.opcode) || r2i1(containingProcessor.getEXUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1 = true;
 						}
 						if(rd_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 								hazard = true;
+								conflict1 = true;
 						}
 					}
 					if(r3(containingProcessor.getMAUnit().controlunit.opcode) || r2i1(containingProcessor.getMAUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 						if(rd_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
-							hazard = true;
+							hazard = true;	
+							conflict2 = true;
 						}
 					}
 					if(r3(containingProcessor.getRWUnit().controlunit.opcode) || r2i1(containingProcessor.getRWUnit().controlunit.opcode)) {
 						if(rs1_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 							hazard = true;
+							conflict3 = true;
 						}
 						 if(rd_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 							hazard = true;
+							conflict3 = true;
 						}
 					}
 					if(containingProcessor.getEXUnit().controlunit.opcode.equals("10110")) {
 						if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1 = true;
 						}
 						if(rd_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 							hazard = true;
+							conflict1 = true;
 						}
 					}
 					if(containingProcessor.getMAUnit().controlunit.opcode.equals("10110")) {
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 						if(rd_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
+							conflict2 = true;
 						}
 					}
 			}
@@ -312,31 +355,37 @@ public class OperandFetch {
 							if(containingProcessor.getEXUnit().controlunit.opcode.equals("00111") || containingProcessor.getEXUnit().controlunit.opcode.equals("00110")) {
 								if(rs1_str.equals("11111")){
 									hazard = true;
+									conflict1 = true;
 								}
 							}
 							if(r3(containingProcessor.getEXUnit().controlunit.opcode) || r2i1(containingProcessor.getEXUnit().controlunit.opcode)) {
 								if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 									hazard = true;
+									conflict1 = true;
 								}
 							}
 							if(r3(containingProcessor.getMAUnit().controlunit.opcode) || r2i1(containingProcessor.getMAUnit().controlunit.opcode)) {
 								if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 									hazard = true;
+									conflict2 = true;
 								}
 							}
 							if(r3(containingProcessor.getRWUnit().controlunit.opcode) || r2i1(containingProcessor.getRWUnit().controlunit.opcode)) {
 								if(rs1_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 									hazard = true;
+									conflict3 = true;
 								}
 							}
 							if(containingProcessor.getEXUnit().controlunit.opcode.equals("10110")) {
 								if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 									hazard = true;
+									conflict1 = true;
 								}
 							}
 							if(containingProcessor.getMAUnit().controlunit.opcode.equals("10110")) {
 								if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 									hazard = true;
+									conflict2 = true;
 								}
 							}
 							if(containingProcessor.getEXUnit().controlunit.opcode.equals("10111")) {
@@ -344,6 +393,7 @@ public class OperandFetch {
 												Integer.parseInt((containingProcessor.getEXUnit().controlunit.rd),2) +
 												convertbin(containingProcessor.getEXUnit().controlunit.Imm) ) {
 									hazard = true;
+									conflict1 = true;
 								}
 							}
 							if(containingProcessor.getMAUnit().controlunit.opcode.equals("10111")) {
@@ -351,6 +401,7 @@ public class OperandFetch {
 												Integer.parseInt((containingProcessor.getMAUnit().controlunit.rd),2) +
 												convertbin(containingProcessor.getMAUnit().controlunit.Imm) ) {
 									hazard = true;
+									conflict2 = true;
 								}
 							}
 					}
@@ -365,49 +416,61 @@ public class OperandFetch {
 							if(containingProcessor.getEXUnit().controlunit.opcode.equals("00111") || containingProcessor.getEXUnit().controlunit.opcode.equals("00110")) {
 								if(rs1_str.equals("11111")){
 									hazard = true;
+									conflict1 = true;
 								}
 								if(rd_str.equals("11111")){
 									hazard = true;
+									conflict1 = true;
 								}
 							}
 							if(r3(containingProcessor.getEXUnit().controlunit.opcode) || r2i1(containingProcessor.getEXUnit().controlunit.opcode)) {
 								if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 									hazard = true;
+									conflict1 = true;
 								}
 								if(rd_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 										hazard = true;
+										conflict1 = true;
 								}
 							}
 							if(r3(containingProcessor.getMAUnit().controlunit.opcode) || r2i1(containingProcessor.getMAUnit().controlunit.opcode)) {
 								if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 									hazard = true;
+									conflict2 = true;
 								}
 								if(rd_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 									hazard = true;
+									conflict2 = true;
 								}
 							}
 							if(r3(containingProcessor.getRWUnit().controlunit.opcode) || r2i1(containingProcessor.getRWUnit().controlunit.opcode)) {
 								if(rs1_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 									hazard = true;
+									conflict3 = true;
 								}
 								if(rd_str.equals(containingProcessor.getRWUnit().controlunit.rd)){
 									hazard = true;
+									conflict3 = true;
 								}
 							}
 							if(containingProcessor.getEXUnit().controlunit.opcode.equals("10110")) {
 								if(rs1_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 									hazard = true;
+									conflict1 = true;
 								}
 								if(rd_str.equals(containingProcessor.getEXUnit().controlunit.rd)){
 									hazard = true;
+									conflict1 = true;
 								}
 							}
 							if(containingProcessor.getMAUnit().controlunit.opcode.equals("10110")) {
 								if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 									hazard = true;
+									conflict2 = true;
 								}
 								if(rd_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 									hazard = true;
+									conflict2 = true;
 								}
 							}
 					}
@@ -428,8 +491,13 @@ public class OperandFetch {
 				OF_EX_Latch.setEX_enable(true);
 			}		
 			else{
-				containingProcessor.getIFUnit().hazard = true ;
-				Statistics.datahaz++;
+				if(conflict1 && containingProcessor.getEXUnit().OF_EX_Latch.isEX_enable())
+					Statistics.datahaz++;
+				else if(conflict2 && containingProcessor.getMAUnit().EX_MA_Latch.isMA_enable() )
+					Statistics.datahaz++;
+				else if(conflict3 && containingProcessor.getRWUnit().MA_RW_Latch.isRW_enable())
+					Statistics.datahaz++;
+				containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false) ;
 			}
 		}
 	}

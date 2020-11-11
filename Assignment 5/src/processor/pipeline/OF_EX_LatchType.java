@@ -2,7 +2,7 @@ package processor.pipeline;
 
 public class OF_EX_LatchType {
 	
-	boolean EX_enable;
+	boolean EX_enable,EX_busy;
 	ControlUnit cu;
 	int rs1;       //if any of these integers are 2147483647 then that integer is not used in the format.
 	int rs2;
@@ -11,6 +11,13 @@ public class OF_EX_LatchType {
 	int branchTarget;
 
 	String instructionFormat;
+
+	public void setEX_busy(boolean eX_busy){
+		 EX_busy=eX_busy;
+	}
+	public boolean isEX_busy() {
+		return EX_busy;
+	}
 
 	public OF_EX_LatchType()
 	{

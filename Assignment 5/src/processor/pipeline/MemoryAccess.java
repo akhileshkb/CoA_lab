@@ -1,22 +1,20 @@
 package processor.pipeline;
 
+import configuration.Configuration;
+import generic.Element;
+import generic.Event;
+import generic.MemoryReadEvent;
+import generic.MemoryResponseEvent;
+import generic.MemoryWriteEvent;
+import generic.Simulator;
+import processor.Clock;
 import processor.Processor;
-import processor.pipeline.ControlUnit;
-import processor.pipeline.EX_IF_LatchType;
-import processor.pipeline.EX_MA_LatchType;
-import processor.pipeline.Execute;
-import processor.pipeline.IF_EnableLatchType;
-import processor.pipeline.IF_OF_LatchType;
-import processor.pipeline.InstructionFetch;
-import processor.pipeline.MA_RW_LatchType;
-import processor.pipeline.OperandFetch;
-import processor.pipeline.OF_EX_LatchType;
 
-public class MemoryAccess {
+public class MemoryAccess{
 	Processor containingProcessor;
 	ControlUnit controlunit = new ControlUnit();
-	EX_MA_LatchType EX_MA_Latch;
-	MA_RW_LatchType MA_RW_Latch;
+	public EX_MA_LatchType EX_MA_Latch;
+	public MA_RW_LatchType MA_RW_Latch;
 	boolean is_end = false;
 	
 	public MemoryAccess(Processor containingProcessor, EX_MA_LatchType eX_MA_Latch, MA_RW_LatchType mA_RW_Latch)
