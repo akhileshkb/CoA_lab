@@ -2,7 +2,7 @@ package processor.pipeline;
 
 public class EX_MA_LatchType {
 	
-	boolean MA_enable,MA_busy;;
+	boolean MA_enable,MA_busy;
 	ControlUnit cu;
 	int ALUresult;
 	int rs2;
@@ -19,6 +19,7 @@ public class EX_MA_LatchType {
 	public EX_MA_LatchType()
 	{
 		MA_enable = false;
+		MA_busy = false;
 	}
 
 	public boolean isMA_enable() {

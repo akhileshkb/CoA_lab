@@ -19,10 +19,10 @@ public class RegisterWrite {
 	
 	public void performRW()
 	{
-		// System.out.println("Entered RW");
+		System.out.println("Entered RW");
 		if(MA_RW_Latch.isRW_enable())
 		{
-			// System.out.println("performing RW");
+			System.out.println("performing RW");
 			//TODO
 			this.controlunit = MA_RW_Latch.getControlUnit(); 
 			int result = MA_RW_Latch.getALUResult();

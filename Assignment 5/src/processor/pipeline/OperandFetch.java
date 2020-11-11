@@ -91,6 +91,7 @@ public class OperandFetch {
 
 	public void performOF()
 	{
+		System.out.println("Entered OF");
 		if(IF_OF_Latch.isOF_enable() && !is_end)
 		{
 			//TODO
@@ -102,7 +103,7 @@ public class OperandFetch {
 			{
 				IF_OF_Latch.OF_busy=false;
 			}
-
+			System.out.println("Performing OF");
 			controlUnit = IF_OF_Latch.getControlUnit();
 
 			if (controlUnit.isEnd())

@@ -22,6 +22,7 @@ public class OF_EX_LatchType {
 	public OF_EX_LatchType()
 	{
 		EX_enable = false;
+		EX_busy = false;
 		rs1 = 0;
 		rs2 = 0;
 		rd = 0;

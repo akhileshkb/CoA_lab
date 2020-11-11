@@ -84,12 +84,13 @@ public class InstructionFetch implements Element{
 		}
 		else 
 		{
-			int currentPC_temp = containingProcessor.getRegisterFile().getProgramCounter();
-			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC_temp);
+			MemoryResponseEvent event=(MemoryResponseEvent) e;
+			// int currentPC_temp = containingProcessor.getRegisterFile().getProgramCounter();
+			// int newInstruction = containingProcessor.getMainMemory().getWord(currentPC_temp);
+			int newInstruction = event.getValue();
 			String instructionString = String.format("%32s", Integer.toBinaryString(newInstruction)).replaceAll(" ","0");
 			String opcode = instructionString.substring(0,5);
-			MemoryResponseEvent event=(MemoryResponseEvent) e;
-			IF_OF_Latch.setInstruction(event.getValue(), opcode);
+			IF_OF_Latch.setInstruction(newInstruction, opcode);
 			IF_OF_Latch.setOF_enable(true);
 			IF_EnableLatch.setIF_busy(false);	
 		}

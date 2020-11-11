@@ -26,11 +26,11 @@ public class MemoryAccess{
 	
 	public void performMA()
 	{
-		// System.out.println("Entered MA");
+		System.out.println("Entered MA");
 		//TODO
 		if(EX_MA_Latch.isMA_enable() && !is_end)
 		{
-			// System.out.println("Performing MA");
+			System.out.println("Performing MA");
 			
 			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());

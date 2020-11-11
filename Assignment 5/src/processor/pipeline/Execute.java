@@ -30,11 +30,11 @@ public class Execute {
 
 	public void performEX()
 	{
-		// System.out.println("Entered EX");
+		System.out.println("Entered EX");
 		//TODO
 		if(OF_EX_Latch.isEX_enable() && !is_end)
 		{
-			// System.out.println("Performing EX");
+			System.out.println("Performing EX");
 
 			int rs1;
 			int rs2;
