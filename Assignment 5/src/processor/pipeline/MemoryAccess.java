@@ -30,16 +30,16 @@ public class MemoryAccess implements Element{
 		if(EX_MA_Latch.isMA_enable() && !is_end)
 		{
 			if(EX_MA_Latch.isMA_busy()){
-				System.out.println("MA Busy");
+				// System.out.println("MA Busy");
 				return;
 			}
 
-			System.out.println("Performing MA");
+			// System.out.println("Performing MA");
 			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
 			this.controlunit = EX_MA_Latch.getControlUnit();
 			MA_RW_Latch.setControlUnit(EX_MA_Latch.getControlUnit());
-			System.out.println(EX_MA_Latch.getControlUnit().isStore() || EX_MA_Latch.getControlUnit().isLoad());
+			// System.out.println(EX_MA_Latch.getControlUnit().isStore() || EX_MA_Latch.getControlUnit().isLoad());
 
 			if (controlunit.isEnd()){
 				is_end = true;
@@ -58,7 +58,7 @@ public class MemoryAccess implements Element{
 				int data = EX_MA_Latch.getStoreData();
 				//containingProcessor.getMainMemory().setWord(location,data);
 				Simulator.getEventQueue().addEvent(new MemoryWriteEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency , this , containingProcessor.getMainMemory() , location , data));
-				System.out.println("Location : " + location + "DATA: " + data);
+				// System.out.println("Location : " + location + "DATA: " + data);
 				EX_MA_Latch.setMA_busy(true);
 			}
 
@@ -71,7 +71,7 @@ public class MemoryAccess implements Element{
 
 		}
 		else{
-			System.out.println("ME HI HOON PROBLEM KI JAD");
+			// System.out.println("ME HI HOON PROBLEM KI JAD");
 			// controlunit.opcode="";
 			// controlunit.rs1="";
 			// controlunit.rs2="";
@@ -85,7 +85,7 @@ public class MemoryAccess implements Element{
 	@Override
 	public void handleEvent(Event e) {
 
-		System.out.println("Handling");
+		// System.out.println("Handling");
 		MemoryResponseEvent event = (MemoryResponseEvent) e;
 		MA_RW_Latch.setLoadResult(event.getValue());
 		EX_MA_Latch.setMA_enable(false);

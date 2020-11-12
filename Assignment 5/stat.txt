@@ -1,3 +1,3 @@
-Number of cycles taken = 2263
+Number of cycles taken = 249
 Number of data hazards = 3
-Number of control hazards = 14
+Number of control hazards = 0

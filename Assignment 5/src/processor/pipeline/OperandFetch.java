@@ -97,14 +97,14 @@ public class OperandFetch {
 			//TODO
 			if(OF_EX_Latch.isEX_busy()) {
 				IF_OF_Latch.OF_busy=true;
-				System.out.println("OF Busy");
+				// System.out.println("OF Busy");
 				return;
 			}
 			else 
 			{
 				IF_OF_Latch.OF_busy=false;
 			}
-			System.out.println("Performing OF");
+			// System.out.println("Performing OF");
 			controlUnit = IF_OF_Latch.getControlUnit();
 
 			if (controlUnit.isEnd())
@@ -178,11 +178,11 @@ public class OperandFetch {
 			boolean conflict2=false;
 			boolean conflict3=false;
 
-			containingProcessor.getEXUnit().controlunit.printCU();
-			containingProcessor.getMAUnit().controlunit.printCU();
-			containingProcessor.getRWUnit().controlunit.printCU();
+			// containingProcessor.getEXUnit().controlunit.printCU();
+			// containingProcessor.getMAUnit().controlunit.printCU();
+			// containingProcessor.getRWUnit().controlunit.printCU();
 
-			System.out.println(String.valueOf(r3(opcode)) + String.valueOf(r2i1(opcode)) +String.valueOf(r2i2(opcode)) + String.valueOf(r2i3(opcode)) + String.valueOf(ri(opcode)));
+			// System.out.println(String.valueOf(r3(opcode)) + String.valueOf(r2i1(opcode)) +String.valueOf(r2i2(opcode)) + String.valueOf(r2i3(opcode)) + String.valueOf(ri(opcode)));
 
 			switch(String.valueOf(r3(opcode)))
 			{
@@ -285,8 +285,8 @@ public class OperandFetch {
 						}
 					}
 					if(containingProcessor.getMAUnit().controlunit.opcode.equals("10110")) {
-						System.out.println("hazard hazard");
-						System.out.println(containingProcessor.getMAUnit().controlunit.rd);
+						// System.out.println("hazard hazard");
+						// System.out.println(containingProcessor.getMAUnit().controlunit.rd);
 						if(rs1_str.equals(containingProcessor.getMAUnit().controlunit.rd)){
 							hazard = true;
 							conflict2 = true;
@@ -490,7 +490,7 @@ public class OperandFetch {
 			}
 
 			if(!hazard){
-				System.out.println("NOT A HAZARD!!!");
+				// System.out.println("NOT A HAZARD!!!");
 				OF_EX_Latch.setRd(rd);
 				OF_EX_Latch.setRs1(rs1);
 				OF_EX_Latch.setRs2(rs2);
@@ -504,7 +504,7 @@ public class OperandFetch {
 				OF_EX_Latch.setEX_enable(true);
 			}		
 			else{
-				System.out.println("HAZARD!!!");
+				// System.out.println("HAZARD!!!");
 				if(conflict1 && containingProcessor.getEXUnit().OF_EX_Latch.isEX_enable())
 					Statistics.datahaz++;
 				else if(conflict2 && containingProcessor.getMAUnit().EX_MA_Latch.isMA_enable() )
