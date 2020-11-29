@@ -1,0 +1,5 @@
+Number of dynamic instructions = 250
+Number of cycles taken = 13889
+Number of data hazards = 199
+Number of control hazards = 176
+Throughput = 0.01799985600115199
