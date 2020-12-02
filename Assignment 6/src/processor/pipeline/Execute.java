@@ -61,11 +61,11 @@ public class Execute implements Element{
 		if(OF_EX_Latch.isEX_enable() && !is_end)
 		{
 			if(OF_EX_Latch.isEX_busy()){
-				System.out.println("EX Busy");
+				// System.out.println("EX Busy");
 				return;
 			}
 
-			System.out.println("Performing EX");
+			// System.out.println("Performing EX");
 
 			int rs1,rs2;
 			setControlUnit(OF_EX_Latch.getControlUnit());
@@ -104,14 +104,14 @@ public class Execute implements Element{
 
 			int aluout = alu.getALUResult();
 			if(cu.isStore()){
-				System.out.println("ALU output "+aluout+"  "+rs1+"  "+rs2);
+				// System.out.println("ALU output "+aluout+"  "+rs1+"  "+rs2);
 			}
 
 			if(cu.isDiv())
 			{
-				System.out.println(aluout);
-				System.out.println("Imm = "+ rs2);
-				System.out.println("rs1 = "+ rs1);
+				// System.out.println(aluout);
+				// System.out.println("Imm = "+ rs2);
+				// System.out.println("rs1 = "+ rs1);
 				int mod = rs1%rs2;
 				containingProcessor.getRegisterFile().setValue(31, mod);
 			}
@@ -143,7 +143,7 @@ public class Execute implements Element{
 			EX_MA_Latch.setRd(OF_EX_Latch.getRd());
 			EX_MA_Latch.setControlUnit(cu);
 
-			System.out.println("OPCODE: EX " + cu.getOpcode());
+			// System.out.println("OPCODE: EX " + cu.getOpcode());
 
 			if(isBranchTaken)
 			{
@@ -179,12 +179,12 @@ public class Execute implements Element{
 	public void handleEvent(Event e) {
 		
 		if(EX_MA_Latch.isMA_busy()) {
-			System.out.println("not Handling");
+			// System.out.println("not Handling");
 			e.setEventTime(Clock.getCurrentTime()+1);
 			Simulator.getEventQueue().addEvent(e);
 		}
 		else {
-			System.out.println("Handling");
+			// System.out.println("Handling");
 			OF_EX_Latch.setEX_enable(false);
 			EX_MA_Latch.setMA_enable(true);
 			OF_EX_Latch.setEX_busy(false);

@@ -25,7 +25,6 @@ public class EventQueue {
 	{
 		while(queue.isEmpty() == false && queue.peek().getEventTime() <= Clock.getCurrentTime())
 		{
-			System.out.println("processing event");
 			Event event = queue.poll();
 			event.getProcessingElement().handleEvent(event);
 		}

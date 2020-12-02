@@ -63,7 +63,7 @@ public class Simulator {
 				i++;
 			}
 			registerFile.setProgramCounter(val);
-			System.out.println("yy"+val);
+			// System.out.println("yy"+val);
 			registerFile.setValue(1,65535);
 			registerFile.setValue(2,65535);
 			processor.setRegisterFile(registerFile);
@@ -87,7 +87,7 @@ public class Simulator {
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();
 			cycles++;
-			System.out.println(Clock.getCurrentTime()+"..............................");
+			// System.out.println(Clock.getCurrentTime()+"..............................");
 		}
 		
 		// TODO

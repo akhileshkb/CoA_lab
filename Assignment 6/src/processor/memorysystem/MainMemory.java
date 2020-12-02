@@ -63,9 +63,6 @@ public class MainMemory implements Element
 			this ,
 			event.getRequestingElement(),
 			getWord(event.getAddressToReadFrom()))) ;
-			System.out.println("Reading memory");
-			System.out.println(event.getAddressToReadFrom());
-			System.out.println(this.getWord(event.getAddressToReadFrom()));
 		}
 		else if(e.getEventType ( ) == EventType.MemoryWrite) {
 
@@ -73,7 +70,6 @@ public class MainMemory implements Element
 			((MemoryAccess)event.getRequestingElement()).EX_MA_Latch.setMA_busy(false);
 			((MemoryAccess)event.getRequestingElement()).MA_RW_Latch.setRW_enable(true);
 			setWord(event.getAddressToWriteTo(),event.getValue());
-			System.out.println("Writing memory");
 		}
 	}
 }

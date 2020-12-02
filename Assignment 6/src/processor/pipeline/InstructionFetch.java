@@ -34,11 +34,11 @@ public class InstructionFetch implements Element{
 		{
 			if(IF_EnableLatch.isIF_busy()) 
 			{
-				System.out.println("IF Busy");
+				// System.out.println("IF Busy");
 				return;
 			}
 
-			System.out.println("Performing IF");
+			// System.out.println("Performing IF");
 			int currentPC;
 			if(EX_IF_Latch.getIsBranchTaken())
 			{
@@ -87,7 +87,7 @@ public class InstructionFetch implements Element{
 			String instructionString = String.format("%32s", Integer.toBinaryString(newInstruction)).replaceAll(" ","0");
 			String opcode = instructionString.substring(0,5);
 			IF_OF_Latch.setInstruction(newInstruction, opcode);
-			System.out.println(opcode);
+			// System.out.println(opcode);
 			IF_OF_Latch.setOF_enable(true);
 			IF_EnableLatch.setIF_busy(false);
 		}

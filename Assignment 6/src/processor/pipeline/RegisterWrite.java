@@ -2,6 +2,7 @@ package processor.pipeline;
 
 import generic.Simulator;
 import processor.Processor;
+import generic.Statistics;
 
 public class RegisterWrite {
 	Processor containingProcessor;
@@ -22,7 +23,7 @@ public class RegisterWrite {
 		//System.out.println("Entered RW");
 		if(MA_RW_Latch.isRW_enable())
 		{
-			System.out.println("performing RW");
+			// System.out.println("performing RW");
 			//TODO
 			this.controlunit = MA_RW_Latch.getControlUnit(); 
 			int result = MA_RW_Latch.getALUResult();
@@ -34,13 +35,14 @@ public class RegisterWrite {
 				result = MA_RW_Latch.getLoadResult();
 			}
 			
-			System.out.println(Integer.toString(result)+" Rd :  "+rd);
+			// System.out.println(Integer.toString(result)+" Rd :  "+rd);
 
             if (controlunit.isWb())
             	containingProcessor.getRegisterFile().setValue(rd,result);
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
 			
 			MA_RW_Latch.setRW_enable(false);
+			Statistics.numberOfInstructions++;
 
 			IF_EnableLatch.setIF_enable(true);
 
@@ -49,7 +51,8 @@ public class RegisterWrite {
 			if(controlunit.opCodeInt == 29){
             	Simulator.setSimulationComplete(true);
 				MA_RW_Latch.setRW_enable(false);
-				System.out.println("BYE BYE");
+				Statistics.numberOfInstructions++;
+				// System.out.println("BYE BYE");s
 				IF_EnableLatch.setIF_enable(false);
 				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter());
 
